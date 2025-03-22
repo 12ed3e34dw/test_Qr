@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [qrText, setQrText] = useState("");
+  const [qrImage, setQrImage] = useState("");
+
+  const generateQR = () => {
+    if (qrText.trim() !== "") {
+      setQrImage(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrText}`);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <div className="container">
+          <p>Enter your text or URL</p>
+          <input
+              type="text"
+              placeholder="Enter your text or URL"
+              value={qrText}
+              onChange={(e) => setQrText(e.target.value)}
+          />
+          {qrImage && (
+              <div id="imgBox">
+                <img src={qrImage} alt="QR Code" />
+              </div>
+          )}
+          <button onClick={generateQR}>Submit</button>
+        </div>
+      </div>
   );
 }
 
